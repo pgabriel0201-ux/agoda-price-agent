@@ -48,7 +48,7 @@ async def gerer_message(update, context):
 
                     for bloc in donnees["blocs"]:
                         for nom_propriete in bloc["proprietes"]:
-                            if bloc["semaine"]:
+                            if bloc["semaine"] and bloc["semaine"]["prix"]:
                                 await appliquer_prix_toutes_chambres(page, nom_propriete, donnees["date_debut"], donnees["date_fin"], bloc["semaine"]["prix"], ["Mon", "Tue", "Wed", "Thu", "Sun"])
                                 _delai_humain()
                             await appliquer_prix_toutes_chambres(page, nom_propriete, donnees["date_debut"], donnees["date_fin"], bloc["weekend"]["prix"], ["Fri", "Sat"])
