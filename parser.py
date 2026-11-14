@@ -23,10 +23,13 @@ Réponds UNIQUEMENT avec un objet JSON valide, sans aucun texte avant ou après,
 {{
   "date_debut": "...",
   "date_fin": "...",
-  "chambres": {{
-    "weekend": {{"jours_habituels": [...], "dates_speciales": [...], "prix": ...}},
-    "semaine": {{"prix": ...}}
-  }},
+  "blocs": [
+    {{
+      "proprietes": ["..."],
+      "weekend": {{"jours_habituels": [...], "dates_speciales": [...], "prix": ...}},
+      "semaine": {{"prix": ...}}
+    }}
+  ],
   "maisons": [
     {{"nom": "...", "prix": ...}}
   ]
@@ -36,11 +39,22 @@ Pour "date_debut" et "date_fin", utilise EXACTEMENT le format YYYY-MM-DD (année
 
 Pour "dates_speciales", n'inclus QUE des dates écrites explicitement dans le message. Si le message ne mentionne aucune date spéciale, n'invente rien et mets une liste vide [].
 
-Si une section (chambres ou maisons) est absente du message, ne l'inclus pas dans le JSON.
-
 Dans ce contexte (Vietnam), "WE" ou "weekend" signifie TOUJOURS vendredi et samedi, sauf si le message précise d'autres jours explicitement. Dans ce cas, "jours_habituels" vaut ["Vendredi", "Samedi"].
 
-Tous les "prix" doivent être des nombres entiers en VND, sans guillemets, sans espaces ni séparateurs. La lettre "M" veut dire million : "1.6 M" ou "1,6 M" donne 1600000 et "1.8 M" donne 1800000. "888 000" donne 888000."""
+Si le message ne donne un prix que pour le weekend, mets "semaine" à null et remplis "weekend" normalement.
+
+Tous les "prix" doivent être des nombres entiers en VND, sans guillemets, sans espaces ni séparateurs. La lettre "M" veut dire million : "1.6 M" ou "1,6 M" donne 1600000 et "1.8 M" donne 1800000. "888 000" donne 888000.
+
+Pour "proprietes" dans chaque bloc, utilise UNIQUEMENT ces noms :
+- "NTMK"
+- "CALMETTE" (quelle que soit la casse)
+- "BV_84" si le message écrit "BV 84", "BV84", "Bui Vien 84" ou "84 Bui Vien" ou juste ces mentions là en majuscule ou minuscule
+- "BV_242" si le message écrit "BV 242", "BV242", "Bui Vien 242" ou "242 Bui Vien" ou juste ces mentions là en majuscule ou minuscule
+Si le message mentionne "BV" ou "Bui Vien" avec un autre numéro, ou sans numéro, ne choisis aucune de ces propriétés : recopie le nom exactement comme il est écrit dans le message.
+Si le message ne cite aucune propriété pour ces prix, mets ["TOUTES"].
+Si plusieurs propriétés ont les mêmes prix, mets-les dans le même bloc. Si les prix diffèrent, fais un bloc par groupe de prix.
+
+Si une section (blocs ou maisons) est absente du message, mets une liste vide []."""
 
   chat = client.chat.completions.create(
   messages=[{"role": "user", "content": prompt}],
@@ -56,7 +70,7 @@ Tous les "prix" doivent être des nombres entiers en VND, sans guillemets, sans 
   return donnees
 
 if __name__ == "__main__":
-    message_test = """Pourriez-vous changer à 1.6 M / nuit pour les jours de la semaine et 1.8 M par nuit pour les jours de WE à partir de 15/11/2026 à 22/11/2026 sur Agoda et les autres apps ?"""
+    message_test = """Pour CALMETTE, 1.8 M le week-end du 28/01/2027 au 01/02/2027"""
 
     resultat = parser_message(message_test)
     print(resultat)
