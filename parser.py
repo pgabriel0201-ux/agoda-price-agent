@@ -41,6 +41,8 @@ Pour "dates_speciales", n'inclus QUE des dates écrites explicitement dans le me
 
 Dans ce contexte (Vietnam), "WE" ou "weekend" signifie TOUJOURS vendredi et samedi, sauf si le message précise d'autres jours explicitement. Dans ce cas, "jours_habituels" vaut ["Vendredi", "Samedi"].
 
+Si le message donne un seul prix sans distinguer semaine et weekend, mets ce même prix dans "semaine" et dans "weekend".
+
 Si le message ne donne un prix que pour le weekend, mets "semaine" à null et remplis "weekend" normalement.
 
 Tous les "prix" doivent être des nombres entiers en VND, sans guillemets, sans espaces ni séparateurs. La lettre "M" veut dire million : "1.6 M" ou "1,6 M" donne 1600000 et "1.8 M" donne 1800000. "888 000" donne 888000.
@@ -70,7 +72,7 @@ Si une section (blocs ou maisons) est absente du message, mets une liste vide []
   return donnees
 
 if __name__ == "__main__":
-    message_test = """Pour CALMETTE, 1.8 M le week-end du 28/01/2027 au 01/02/2027"""
+    message_test = """Pour CALMETTE, 1.6 M par nuit du 28/01/2027 au 01/02/2027"""
 
     resultat = parser_message(message_test)
     print(resultat)
