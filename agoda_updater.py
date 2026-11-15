@@ -219,6 +219,10 @@ async def appliquer_prix_toutes_chambres(page, nom_propriete, date_debut, date_f
         _delai_humain()
         await page.locator(SELECTEUR_TOGGLE).click()
 
+        SELECTEUR_OPEN = f"[data-testid='open-room-radio-button-{id_chambre}']"
+        _delai_humain()
+        await page.locator(SELECTEUR_OPEN).click()
+
         SELECTEUR_PRIX = f"[data-testid='rate-card-input-{id_chambre}-{id_rate_plan}']"
         await page.locator(SELECTEUR_PRIX).wait_for()
         _delai_humain()
