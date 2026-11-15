@@ -24,10 +24,11 @@ The confirmation step is a safety rule: the bot never touches Agoda without an e
 - Logs into the Agoda Partner Portal. When Agoda asks for an email verification, the bot reads the verification email over IMAP and opens the sign-in link.
 - Updates every room of a property, for weekdays and weekends, or for the weekend only.
 - Opens a room before changing its price, when Agoda shows it as closed.
-- Tested one property at a time on Agoda: NTMK, CALMETTE, BV_84 and BV_242.
+- Updates all four properties in one run when the message does not name any property (tested once).
+- Closes an Agoda popup that appears while the bot is working (seen once; the popup is intermittent).
 
 **Known limitation**
-- An Agoda popup sometimes appears on the calendar page and can block the bot.
+- The Agoda popup appears at unpredictable moments. The bot now tries to close it at a few key steps, but a popup that appears between two checks can still block it.
 
 **In progress**
 - Whole-house prices (one room per property, different logic).
