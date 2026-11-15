@@ -18,21 +18,25 @@ The confirmation step is a safety rule: the bot never touches Agoda without an e
 ## Status
 
 **Working**
-- Reads a price message and returns structured JSON (dates, weekday price, weekend price).
+- Reads a price message and returns structured JSON (dates, weekday price, weekend price, one or several properties).
 - Waits for the user's "OK" before doing anything on Agoda.
+- Checks every property name before opening the browser, and stops with a message on Telegram if one is unknown.
 - Logs into the Agoda Partner Portal. When Agoda asks for an email verification, the bot reads the verification email over IMAP and opens the sign-in link.
-- Updates the prices of every room of one property, once for weekdays and once for weekends.
+- Updates every room of a property, for weekdays and weekends, or for the weekend only.
+- Opens a room before changing its price, when Agoda shows it as closed.
+- Tested one property at a time on Agoda: NTMK, CALMETTE, BV_84 and BV_242.
+
+**Known limitation**
+- An Agoda popup sometimes appears on the calendar page and can block the bot.
 
 **In progress**
-- Support for the other properties: their room IDs are collected, but the bot is not wired to them yet.
-- Reading the property name from the message instead of using a fixed one.
 - Whole-house prices (one room per property, different logic).
 - Special dates (for example public holidays) written in the message.
+- Better logging than console messages.
+- Automated tests.
 
 **Not included**
 - Other platforms (Expedia, Trip.com).
-- Automated tests.
-- Logging beyond simple console messages.
 
 ## Tech stack
 
