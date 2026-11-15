@@ -177,14 +177,20 @@ async def connexion(page):
             await page.goto(lien)
             return True
     
+async def fermer_popup(page):
+    try:
+        _delai_humain()
+        await page.locator(SELECTEUR_BOUTON_CROIX).click(timeout=1000)
+    except:
+        pass
 
 async def naviguer_et_fermer_popup(page, url):
     await page.goto(url)
     try:
         _delai_humain()
         await page.locator(SELECTEUR_BOUTON_CROIX).click(timeout=5000)
-    except:
-        pass
+    except Exception as e:
+        print(type(e).__name__, str(e)[:200])
 
 async def naviguer_vers_calendrier(page, nom_propriete, type_bien, date_debut, date_fin):
     url = f"https://portal.agoda.com/mldc/en-us/app/ari/calendar/{PROPRIETES[nom_propriete][type_bien]}?startDate={date_debut}&endDate={date_fin}"
@@ -198,6 +204,7 @@ async def appliquer_prix_toutes_chambres(page, nom_propriete, date_debut, date_f
     _delai_humain()
     await page.locator(SELECTEUR_MENU_CHAMBRES).click()
     _delai_humain()
+    await fermer_popup(page)
     await page.locator(SELECTEUR_SELECT_ALL).wait_for()
     await page.locator(SELECTEUR_SELECT_ALL).click()
     _delai_humain()
