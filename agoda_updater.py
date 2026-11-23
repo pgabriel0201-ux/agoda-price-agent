@@ -30,47 +30,56 @@ PROPRIETES = {
     "NTMK": {
         "chambres": 64460441,
         "maison": 87934925,
+        "maison_chambre": 1375876866,
+        "maison_rate_plan": 23274257,
         "rate_plan": 19443213,
         "chambres_ids": {
-        "RDC": 1000014828,
-        "1er_devant": 1000018669,
-        "2eme_devant": 1000077213,
-        "3eme_devant": 1000078702,
-        "4eme_devant": 1000085136,
-        "4eme_derriere": 1000085487,
-        "3eme_derriere": 1000086798,
-        "2eme_derriere": 1000086898,
-        "1er_derriere": 1000086932
+            "RDC": 1000014828,
+            "1er_devant": 1000018669,
+            "2eme_devant": 1000077213,
+            "3eme_devant": 1000078702,
+            "4eme_devant": 1000085136,
+            "4eme_derriere": 1000085487,
+            "3eme_derriere": 1000086798,
+            "2eme_derriere": 1000086898,
+            "1er_derriere": 1000086932
         }
-
     },
+
+
     "CALMETTE": {
         "chambres": 80606874,
         "maison": 76958683,
+        "maison_chambre": 1191814542,
+        "maison_rate_plan": 21103700,
         "rate_plan": 22042465,
         "chambres_ids": {
-        "302": 1266541211,
-        "202": 1266541212,
-        "301": 1266541213,
-        "201": 1266541214,
-        "101": 1266541215,
-        "001": 1266541216,
-        "102": 1266541217
+            "302": 1266541211,
+            "202": 1266541212,
+            "301": 1266541213,
+            "201": 1266541214,
+            "101": 1266541215,
+            "001": 1266541216,
+            "102": 1266541217
         }
-  
     },
+
+
     "BV_84": {
         "chambres": 86497055,
         "maison": 86736085,
+        "maison_chambre": 1359242281,
+        "maison_rate_plan": 23018405,
         "rate_plan": 22966719,
         "chambres_ids": {
-        "5": 1355752106,
-        "1er_etage": 1359243940,
-        "2eme_etage": 1359312533,
-        "RDC": 1365244968
-    }
-
+            "5": 1355752106,
+            "1er_etage": 1359243940,
+            "2eme_etage": 1359312533,
+            "RDC": 1365244968
+        }
     },
+
+
     "BV_242": {
         "chambres": 72310904,
         "rate_plan": 20580642,
@@ -78,11 +87,11 @@ PROPRIETES = {
         "maison_chambre": 1191815002,
         "maison_rate_plan": 21103712,
         "chambres_ids": {
-        "202": 1139264788,
-        "101": 1139264790,
-        "302": 1139264791,
-        "301": 1139264792
-    }
+            "202": 1139264788,
+            "101": 1139264790,
+            "302": 1139264791,
+            "301": 1139264792
+        }
     }
 }
 
@@ -272,9 +281,8 @@ async def main():
         navigateur = await p.chromium.launch(headless=False)
         page = await navigateur.new_page() 
         await connexion(page)
-        await appliquer_prix_maisons(page, "BV_242", "2027-04-10", "2027-04-10", "15200000")
-
-        time.sleep(15)
+        await appliquer_prix_maisons(page, "NTMK", "2027-04-10", "2027-04-10", "24599000")
+        await appliquer_prix_maisons(page, "BV_84", "2027-04-10", "2027-04-10", "8999000")
 
 
 if __name__ == "__main__": 
