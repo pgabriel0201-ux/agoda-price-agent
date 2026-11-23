@@ -73,8 +73,10 @@ PROPRIETES = {
     },
     "BV_242": {
         "chambres": 72310904,
-        "maison": 76958707,
         "rate_plan": 20580642,
+        "maison": 76958707,
+        "maison_chambre": 1191815002,
+        "maison_rate_plan": 21103712,
         "chambres_ids": {
         "202": 1139264788,
         "101": 1139264790,
@@ -200,15 +202,7 @@ async def appliquer_prix_toutes_chambres(page, nom_propriete, date_debut, date_f
 
     _delai_humain()
     await naviguer_vers_calendrier(page, nom_propriete, "chambres", date_debut, date_fin)
-
-    _delai_humain()
-    await page.locator(SELECTEUR_MENU_CHAMBRES).click()
-    _delai_humain()
     await fermer_popup(page)
-    await page.locator(SELECTEUR_SELECT_ALL).wait_for()
-    await page.locator(SELECTEUR_SELECT_ALL).click()
-    _delai_humain()
-    await page.locator(SELECTEUR_APPLY_ALL).click()
 
     _delai_humain()
     await page.locator("text=Specify day of the week").click()
@@ -220,7 +214,7 @@ async def appliquer_prix_toutes_chambres(page, nom_propriete, date_debut, date_f
             await page.locator(SELECTEUR_JOURS_DECOCHES).click()
 
     id_rate_plan = PROPRIETES[nom_propriete]["rate_plan"]
-    
+
     for nom_chambre, id_chambre in PROPRIETES[nom_propriete]["chambres_ids"].items():
         SELECTEUR_TOGGLE = f"[data-testid='ycs-calendar-page-room-card-accordion-toggle-{id_chambre}']"
         _delai_humain()
@@ -244,6 +238,32 @@ async def appliquer_prix_toutes_chambres(page, nom_propriete, date_debut, date_f
         except:
             pass
     
+async def appliquer_prix_maisons(page, nom_propriete, date_debut, date_fin, prix):
+
+    _delai_humain()
+    await naviguer_vers_calendrier(page, nom_propriete, "maison", date_debut, date_fin)
+    await fermer_popup(page)
+
+    id_maison_rate_plan = PROPRIETES[nom_propriete]["maison_rate_plan"]
+    id_maison = PROPRIETES[nom_propriete]["maison_chambre"]
+
+    SELECTEUR_OPEN = f"[data-testid='open-room-radio-button-{id_maison}']"
+    _delai_humain()
+    await page.locator(SELECTEUR_OPEN).click()
+
+    SELECTEUR_PRIX = f"[data-testid='rate-card-input-{id_maison}-{id_maison_rate_plan}']"
+    await page.locator(SELECTEUR_PRIX).wait_for()
+    _delai_humain()
+    await page.locator(SELECTEUR_PRIX).click()
+    _delai_humain()
+    await page.locator(SELECTEUR_PRIX).press("Control+A")
+    _delai_humain()
+    await page.locator(SELECTEUR_PRIX).press_sequentially(str(prix))
+    try: 
+        _delai_humain()
+        await page.locator(SELECTEUR_BOUTON_SAVE).click(timeout=2000)
+    except:
+        pass
 
 
 
@@ -252,11 +272,7 @@ async def main():
         navigateur = await p.chromium.launch(headless=False)
         page = await navigateur.new_page() 
         await connexion(page)
-        await appliquer_prix_toutes_chambres(page, "NTMK", "2026-09-22", "2026-09-27 ", "888000", ["Mon", "Tue", "Wed", "Thu", "Sun"])
-
-        _delai_humain()
-
-        await appliquer_prix_toutes_chambres(page, "NTMK", "2026-09-22", "2026-09-27", "999000", ["Fri", "Sat"])
+        await appliquer_prix_maisons(page, "BV_242", "2027-04-10", "2027-04-10", "15200000")
 
         time.sleep(15)
 
