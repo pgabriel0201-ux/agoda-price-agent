@@ -58,6 +58,8 @@ Si le message mentionne "BV" ou "Bui Vien" avec un autre numéro, ou sans numér
 Si le message ne cite aucune propriété pour ces prix, mets ["TOUTES"].
 Si plusieurs propriétés ont les mêmes prix, mets-les dans le même bloc. Si les prix diffèrent, fais un bloc par groupe de prix.
 
+Pour "nom" dans "maisons", utilise UNIQUEMENT les mêmes noms que pour "proprietes" : "NTMK", "CALMETTE", "BV_84" ou "BV_242", avec les mêmes variantes d'écriture. Si le message écrit un autre nom, recopie-le tel quel.
+
 Si une section (blocs ou maisons) est absente du message, mets une liste vide []."""
 
   chat = client.chat.completions.create(
@@ -74,7 +76,10 @@ Si une section (blocs ou maisons) est absente du message, mets une liste vide []
   return donnees
 
 if __name__ == "__main__":
-    message_test = """Pour CALMETTE, 1.6 M par nuit du 28/01/2027 au 01/02/2027"""
+    message_test = """Pourriez-vous mettre les prix suivants du 08/04/2027 au 12/04/2027 :
+MAISON :
+  BV 84 : 2 688 000 / jour
+  Calmette : 6 688 000 / jour"""
 
     resultat = parser_message(message_test)
     print(resultat)
