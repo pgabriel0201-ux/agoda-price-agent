@@ -58,6 +58,8 @@ Si le message mentionne "BV" ou "Bui Vien" avec un autre numéro, ou sans numér
 Si le message ne cite aucune propriété pour ces prix, mets ["TOUTES"].
 Si plusieurs propriétés ont les mêmes prix, mets-les dans le même bloc. Si les prix diffèrent, fais un bloc par groupe de prix.
 
+Les "maisons" et les "chambres" sont deux choses différentes. Remplis "maisons" uniquement si le message parle de maison(s), et mets alors une liste vide [] dans "blocs", sauf si le message donne aussi des prix pour les chambres. Ne mets jamais le même prix à la fois dans "blocs" et dans "maisons".
+
 Pour "nom" dans "maisons", utilise UNIQUEMENT les mêmes noms que pour "proprietes" : "NTMK", "CALMETTE", "BV_84" ou "BV_242", avec les mêmes variantes d'écriture. Si le message écrit un autre nom, recopie-le tel quel.
 
 Si une section (blocs ou maisons) est absente du message, mets une liste vide []."""
@@ -76,10 +78,7 @@ Si une section (blocs ou maisons) est absente du message, mets une liste vide []
   return donnees
 
 if __name__ == "__main__":
-    message_test = """Pourriez-vous mettre les prix suivants du 08/04/2027 au 12/04/2027 :
-MAISON :
-  BV 84 : 2 688 000 / jour
-  Calmette : 6 688 000 / jour"""
+    message_test = """Pour le 10/04/2027,pour les maisons BV 84 : 15199000 / jour, BV 242 : 8999000 / jour, NTMK: 24599000/jour et Calmette: 18399000/jour"""
 
     resultat = parser_message(message_test)
     print(resultat)
