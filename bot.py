@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 from parser import parser_message
 from playwright.async_api import async_playwright
-from agoda_updater import connexion, _delai_humain, appliquer_prix_toutes_chambres, PROPRIETES
+from agoda_updater import connexion, _delai_humain, appliquer_prix_toutes_chambres, appliquer_prix_maisons, PROPRIETES
 import os
 import json
 import time
@@ -57,6 +57,10 @@ async def gerer_message(update, context):
                                 await appliquer_prix_toutes_chambres(page, nom_propriete, donnees["date_debut"], donnees["date_fin"], bloc["semaine"]["prix"], ["Mon", "Tue", "Wed", "Thu", "Sun"])
                                 _delai_humain()
                             await appliquer_prix_toutes_chambres(page, nom_propriete, donnees["date_debut"], donnees["date_fin"], bloc["weekend"]["prix"], ["Fri", "Sat"])
+
+                    for maison in donnees["maisons"]:
+                        if maison["prix"]:
+                            await appliquer_prix_maisons(page, maison["nom"], donnees["date_debut"], donnees["date_fin"], maison["prix"])
 
                     del context.user_data["attente_confirmation"]
                     await update.message.reply_text("Les prix sont modifiés")
