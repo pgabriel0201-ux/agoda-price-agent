@@ -9,17 +9,18 @@ import time
 
 load_dotenv()
 TOKEN = os.getenv("TELEGRAM_TOKEN")
+TELEGRAM_ID = os.getenv("TELEGRAM_CHAT_ID")
                            
 
-async def start(update, context):
-    await update.message.reply_text("Salut je suis ton agent qui change les prix automatiquement")
-
+async def message_demarrage(application):
+    await application.bot.send_message(TELEGRAM_ID, "Salut je suis ton agent qui change les prix automatiquement")
+    
 async def gerer_message(update, context): 
     if "attente_confirmation" in context.user_data:
         if update.message.text == "OK":
             donnees = context.user_data["attente_confirmation"]
 
-            if not donnees["blocs"]:
+            if not donnees["blocs"] and not donnees["maisons"]:
                 await update.message.reply_text("Il n'y a rien à modifier")
                 return
 
@@ -31,6 +32,10 @@ async def gerer_message(update, context):
                 for nom_propriete in bloc["proprietes"]:
                     if nom_propriete not in PROPRIETES:
                         noms_inconnus.append(nom_propriete)
+
+            for maison in donnees["maisons"]:
+                if maison["nom"] not in PROPRIETES:
+                    noms_inconnus.append(maison["nom"])
 
             if noms_inconnus:
                 await update.message.reply_text(f"Noms inconnus : {', '.join(noms_inconnus)}. Je ne touche à rien.")            
@@ -69,7 +74,6 @@ async def gerer_message(update, context):
     
     
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+app = ApplicationBuilder().token(TOKEN).post_init(message_demarrage).build()
 app.add_handler(MessageHandler(filters.TEXT, gerer_message))
 app.run_polling()
