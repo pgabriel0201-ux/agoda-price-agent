@@ -212,6 +212,16 @@ async def appliquer_prix_toutes_chambres(page, nom_propriete, date_debut, date_f
     _delai_humain()
     await naviguer_vers_calendrier(page, nom_propriete, "chambres", date_debut, date_fin)
     await fermer_popup(page)
+    
+    _delai_humain()
+    await page.locator(SELECTEUR_MENU_CHAMBRES).click()
+    _delai_humain()
+    await fermer_popup(page)
+    await page.locator(SELECTEUR_SELECT_ALL).wait_for()
+    await page.locator(SELECTEUR_SELECT_ALL).click()
+    _delai_humain()
+    await page.locator(SELECTEUR_APPLY_ALL).click()
+
 
     _delai_humain()
     await page.locator("text=Specify day of the week").click()

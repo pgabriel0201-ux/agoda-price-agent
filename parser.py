@@ -39,6 +39,8 @@ Pour "date_debut" et "date_fin", utilise EXACTEMENT le format YYYY-MM-DD (année
 
 Pour "dates_speciales", n'inclus QUE des dates écrites explicitement dans le message. Si le message ne mentionne aucune date spéciale, n'invente rien et mets une liste vide [].
 
+Si le message donne un prix différent pour des dates spéciales, mets ce prix dans "prix_dates_speciales". S'il n'y a pas de dates spéciales, mets null.
+
 Dans ce contexte (Vietnam), "WE" ou "weekend" signifie TOUJOURS vendredi et samedi, sauf si le message précise d'autres jours explicitement. Dans ce cas, "jours_habituels" vaut ["Vendredi", "Samedi"].
 
 Si le message donne un seul prix sans distinguer semaine et weekend, mets ce même prix dans "semaine" et dans "weekend".
@@ -62,11 +64,11 @@ Si une section (blocs ou maisons) est absente du message, mets une liste vide []
   messages=[{"role": "user", "content": prompt}],
   model="openai/gpt-oss-120b",
   temperature=0,
-  max_tokens=1500
+  max_tokens=4000
   )
 
   reponse_brute = chat.choices[0].message.content
-    
+
   donnees = json.loads(reponse_brute)
     
   return donnees
